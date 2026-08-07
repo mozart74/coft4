@@ -1,5 +1,6 @@
 ﻿using COFT2;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -32,20 +33,9 @@ namespace COFT2
             
         }
 
-        // Search for keywords
-        string SearchKey(string keyword)
-        {
-            for(k in _keywords)
-            {
-                if(k == keyword)
-                    return k;
-            }
-
-            return _NONE;
-        }
-
-
-
+        /// <summary>
+        /// Run the C compiler
+        /// </summary>
 
         /////////////////////////////////////////////
         // Propetyies
@@ -63,18 +53,10 @@ namespace COFT2
             }
         }
 
-        public string Key
-        {
-              get
-              {
-                    return (int) _keywords(_keys);
-              }
-        }
-
         private enum KEYWORDS
         {
             AUTO,
-            BREAK.
+            BREAK,  
             CASE,
             CHAR,
             CONST,
@@ -112,19 +94,17 @@ namespace COFT2
             _COMPLEX,
             _DECIMAL128,
             _DECIMAL32,
-            _Decimal64
+            _Decimal64,
             _GENERIC,
             _IMAGINARY,
             _NORETURN,
-            _STATIC_ASSERT
+            _STATIC_ASSERT,
             _THREAD_LOCAL,
             _NONE
-        }
-
-        private const int KEYWORDS = 47;
+        };
 
         private KEYWORDS _keys;
-        private readonly Array<string> _keywords;
+        private readonly List<string> _keywords;
         private readonly CommandLine _cmd_line;
     }
 }

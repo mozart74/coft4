@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
+
 using COFT2;
 using System.Runtime.CompilerServices;
 
@@ -36,30 +37,23 @@ namespace COFT2
                 return 1;
             }
 
-            // compile the source file to the object file
-
             // Open the object file for writing
-            try
-            {
-                IO.FileStream obj_file = new IO.FileStream(cmd.ObjectFile, IO.FileMode.Create | IO.FileMode.Write);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("FATAL ERROR: Could not open object file");
-                return 1;
-            }
+            int ret = 0;
 
-           // Compile the source file to the object file
-           for(string soureFile in cmd.SourceFiles)
+            FileInfo fs = new FileInfo(cmd.ObjectFile);
+
+            using (BinaryWriter bw = new BinaryWriter(fs.OpenWrite))
             {
-                // Compile C file
-                try
+                foreach (string source_file in cmd.SourceFiles)
                 {
                     // Open source file for reading
-
+                    cc,Compile(bw, source_file);
                 }
-                catch(Exception ex)
-                {
+
+            }
+
+            // Return to system
+            return 0;
         }
     }
 }
