@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
-
+using System.IO;
 
 namespace COFT2
 {
@@ -13,8 +13,10 @@ namespace COFT2
     /// </summary>
    public class CompileC
     {
-        public CompileC()
+        public CompileC(CommandLine cmdLine)
         {
+            _cmd_line = cmdLine;
+
             _keywords = null;
             
             _keywords = new List<string>();
@@ -29,18 +31,43 @@ namespace COFT2
 
             _keys = KEYWORDS._NONE;
 
-
+            _cmd_line = cmdLine;
             
         }
 
         /// <summary>
         /// Run the C compiler
         /// </summary>
+        /// 
+        private int Run()
+        {
+            FileInfo fi = new FileInfo(_cmd_line.ObjectFile);
+            FileStream fsout = fi.OpenWrite();
+
+            
+            // Open souurce file
+            foreach(string sf in _cmd_line.SourceFile)
+            {
+                // Open Text
+                FileInfo si = new FileInfo(sf);
+                FileStream fsin = si.OpenRead();
+
+                string buffer = new string;
+
+                while(fsin.Read((byte) string)
+                {
+
+                }   
+            }
+
+            return 0;
+            
+        }
 
         /////////////////////////////////////////////
         // Propetyies
         /////////////////////////////////////////////
-        KEYWORDS Keyword
+        public KEYWORDS Keyword
         {
             set
             {

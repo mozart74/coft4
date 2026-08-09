@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using COFT2;
 
@@ -10,7 +11,8 @@ namespace COFT2
     {
         public CommandLine()
         {
-            _source_file = new Stack<string>();
+            List<string> _source_file = new List<string>();
+
 
             _object_file = "";
             _is_verbose = new bool();
@@ -133,11 +135,6 @@ namespace COFT2
             get { return _object_file; }
         }
 
-        Stack<string> SourceFiles
-        {
-            get { return _source_file; }
-        }
-
         public bool IsVerbose
         {
             get { return _is_verbose; }
@@ -160,8 +157,21 @@ namespace COFT2
             get { return _is_source; }
         }
 
+        public string SourceFiles
+        {
+            get
+            {
+                yield(_source_file);
+                _source_file = _source_file.Next();
+            }
+            set
+            {
+                _source_file.Push(value);
+            }
+        }
+
         private string _object_file; // Object file to be processed
-        private readonly Stack<string> _source_file; // Stack of source files to be processed
+        private readonly list<string>> _source_file // Source files to be proccessed
         private bool _is_verbose; // Verbose output flag;
         private bool _is_help; // Help flag;
         private bool _is_obj; // Object file flag;
