@@ -11,7 +11,7 @@ namespace COFT2
     {
         public CommandLine()
         {
-            List<string> _source_file = new List<string>();
+            Stack<string> _source_file = new Stack<string>();
 
 
             _object_file = "";
@@ -90,7 +90,7 @@ namespace COFT2
 
                         _is_source = true;
 
-                        _source_file.Push(i);
+                        this.SourceFiles =  i;
 
                     }
                     // End if
@@ -161,8 +161,7 @@ namespace COFT2
         {
             get
             {
-                yield(_source_file);
-                _source_file = _source_file.Next();
+                
             }
             set
             {
@@ -171,7 +170,7 @@ namespace COFT2
         }
 
         private string _object_file; // Object file to be processed
-        private readonly list<string>> _source_file // Source files to be proccessed
+        private stack<string> _source_file // Source files to be proccessed
         private bool _is_verbose; // Verbose output flag;
         private bool _is_help; // Help flag;
         private bool _is_obj; // Object file flag;

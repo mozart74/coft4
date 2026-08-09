@@ -40,7 +40,8 @@ namespace COFT2
             CompilerC cc = new CompilerC(cmd);
 
 
-            
+            // Return success
+            return 0;
         }
     }
 }
