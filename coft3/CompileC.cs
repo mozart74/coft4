@@ -18,8 +18,6 @@ namespace COFT2
             _cmd_line = cmdLine;
 
             _keywords = null;
-            
-            _keywords = new List<string>();
             _keywords.AddRange(new string[] {
               "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
             "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
@@ -41,28 +39,54 @@ namespace COFT2
         /// 
         private int Run()
         {
-            FileInfo fi = new FileInfo(_cmd_line.ObjectFile);
-            FileStream fsout = fi.OpenWrite();
-
-            
-            // Open souurce file
-            foreach(string sf in _cmd_line.SourceFile)
+            // Look fo errors
+            if (_cmd_line == null)
             {
-                // Open Text
-                FileInfo si = new FileInfo(sf);
-                FileStream fsin = si.OpenRead();
-
-                string buffer = new string;
-
-                while(fsin.Read((byte) string)
-                {
-
-                }   
+                Console.WriteLine("FATAL ERROR: Not expecting the command line to be null");
+                return 2;
+            }
+      
+            if (_cmd_line.ObjectFile == null || _cmd_line.ObjectFile == "")
+            {
+                Console.WriteLine("FATAL E#RROR: No object file");
+                return 2;
             }
 
+
+            FileStream fs = File.OpenWrite(_cmd_line.ObjectFile);
+
+            if (fs == null)
+            {
+                Console.WriteLine("FATAL ERROR: Can't open {0}");
+                return 2;
+            }
+
+            // Open souurce file
+            for (int index = 0; index <= _cmd_line.Count; index++)
+            {
+                string source = _cmd_line.Get(index);
+
+                // Open Text
+                FileStream fi = File.OpenText(source, FileAccess.Write, FilShare.None);
+            
+                // Check the file
+                if (fi == null)
+                {
+                   Console.WriteLine("FATAL ERROR: Can't openm the source file");
+                return 2;
+                }
+          
+                fi.Close();
+            }
+
+            // Close file
+            fs.Close();
+
+            // Return
             return 0;
             
         }
+s
 
         /////////////////////////////////////////////
         // Propetyies
@@ -80,7 +104,7 @@ namespace COFT2
             }
         }
 
-        private enum KEYWORDS
+        public enum KEYWORDS
         {
             AUTO,
             BREAK,  
@@ -121,7 +145,7 @@ namespace COFT2
             _COMPLEX,
             _DECIMAL128,
             _DECIMAL32,
-            _Decimal64,
+            _DECIMAL64;
             _GENERIC,
             _IMAGINARY,
             _NORETURN,

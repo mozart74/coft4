@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -7,12 +8,20 @@ using COFT2;
 
 namespace COFT2
 {
-    public class CommandLine
+    /// <summary>
+    /// Command Line
+    /// </summary>
+    public class CommandLine : IDisposable, ICloneable, IEnumerable
     {
+        private const int MAX_SOURCE_FILES = 255;
         public CommandLine()
         {
-            Stack<string> _source_file = new Stack<string>();
+            _object_file = null;
+            _source_files = null;
 
+            _object_file = new string("");
+            _source_files = new ArrayList();
+            _count = 0;
 
             _object_file = "";
             _is_verbose = new bool();
@@ -28,6 +37,29 @@ namespace COFT2
             _is_obj = false;
         }
 
+        /// <summary>
+        /// Dispose of class
+        /// </summary>
+        public void Dispose()
+        {
+            _object_file = null;
+            _source_files = null;
+            _count = 0;
+        }
+
+        /// <summary>
+        /// Clone the structure
+        /// </summary>
+        public object Clone()
+        {
+            return this.+MemberwieClone();
+        }
+
+        // refrents count
+        public AddRef()
+        {
+            _count++;
+        }
 
         //////////////////////////////////
         ///  <summary>
@@ -36,7 +68,7 @@ namespace COFT2
         /// <param name="cmd"></param>
         public void ParseCommandLine(params string[] cmd)
         {
-            if (cmd == null)
+            if (cmd == null || cmd.Length == 0)
             {
                 _is_help = true;
                 Usage();
@@ -56,7 +88,7 @@ namespace COFT2
                     {
                         _is_help = true;
 
-                        if (_is_verbose == true)                                           
+                        if (_is_verbose == true)
                         {
                             Console.WriteLine("Help System");
                         }
@@ -68,18 +100,17 @@ namespace COFT2
                     else if (i.EndsWith(".obj") == true) // If obj then compile obj
                     {
 
-                        this._is_obj = true;
+                       _is_obj = true;
 
                         // If verbose then more sturgg
-                        if (this._is_verbose == true)
-                            Console.WriteLine("Object.... ");
-
-                        this._object_file = i;
-
-                        if (this._is_verbose == true)
+                        if (IsVerbose() == true)
                         {
+
+                            Console.WriteLine("Object.... ");
                             Console.WriteLine("Object File = {0}", _object_file);
                         }
+
+                        _object_file = i;
                     }
                     else if (i.EndsWith(".c") == true || i.EndsWith(".cpp") == true)
                     {
@@ -89,11 +120,8 @@ namespace COFT2
                         }
 
                         _is_source = true;
-
-                        this.SourceFiles =  i;
-
+                        Add(i);
                     }
-                    // End if
                     else
                     {
                         Console.WriteLine("Unknown command line argument: {0}", i);
@@ -103,9 +131,6 @@ namespace COFT2
                 } // End foreach
             } // END IF
         } // end ParseCommandLines
-
-
-
 
         //////////////////////////////////////////////////////////////
         /// <summury>
@@ -126,6 +151,15 @@ namespace COFT2
             Console.WriteLine("\t<>=.c.cpps <souce_files>...");
         }
 
+        /// <summary>
+        /// GetCount: Ger counder
+        /// </summary>
+        /// <returns></returns>
+        public int GetCount()
+        {
+            return _count;
+        }
+
         ///////////////////////////////////////////////////////
         /// <summary>
         /// *** Properies ***
@@ -133,6 +167,24 @@ namespace COFT2
         public string ObjectFile
         {
             get { return _object_file; }
+        }
+
+        // Get sourcw file
+        public void Add(string file)
+        {
+            _AddRef();
+            __cmd_line.Insert(file);
+        }
+
+        // Get the object file
+        public string Get(int index)
+        {
+            return _cmd_line._source_files[i];
+        }
+
+        object ICloneable.Clone()
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsVerbose
@@ -157,23 +209,26 @@ namespace COFT2
             get { return _is_source; }
         }
 
-        public string SourceFiles
+        public Count
         {
-            get
-            {
-                
-            }
-            set
-            {
-                _source_file.Push(value);
-            }
+            get { return _count; }
         }
 
+        public operator this [int index]
+            {
+                set{_source_files.Insert(index, value); }
+                get{return _source_files[index]; }
+                
+                
+
+
+            
         private string _object_file; // Object file to be processed
-        private stack<string> _source_file // Source files to be proccessed
+        private ArrayList _source_files; // Source file to be processed
         private bool _is_verbose; // Verbose output flag;
         private bool _is_help; // Help flag;
         private bool _is_obj; // Object file flag;
         private bool _is_source; // Source file flag
+        private int _count; // Count of source files
     } // End class CommmandLine
 } // end namespace COFT2

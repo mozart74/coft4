@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
 using COFT2;
 using System.Runtime.CompilerServices;
 
@@ -37,8 +36,8 @@ namespace COFT2
             }
 
             // Run the compiler
-            CompilerC cc = new CompilerC(cmd);
-
+            CompileC cc = new CompileC(cmd);
+            cc.Displose();
 
             // Return success
             return 0;
