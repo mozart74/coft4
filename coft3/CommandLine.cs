@@ -214,10 +214,10 @@ namespace COFT2
             get { return _count; }
         }
 
-        public operator this [int index]
+        public string this [int index]
             {
                 set{_source_files.Insert(index, value); }
-                get{return _source_files[index]; }
+            get{ return _source_files[index]; }
                 
                 
 
