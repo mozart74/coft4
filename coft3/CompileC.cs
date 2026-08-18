@@ -67,7 +67,7 @@ namespace COFT2
                 string source = _cmd_line.Get(index);
 
                 // Open Text
-                FileStream fi = File.OpenText(source, FileAccess.Write, FilShare.None);
+                FileStream fi = File.OpenText(source);
             
                 // Check the file
                 if (fi == null)

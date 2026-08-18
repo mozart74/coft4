@@ -96,7 +96,7 @@ namespace COFT2
                        _is_obj = true;
 
                         // If verbose then more sturgg
-                        if (IsVerbose() == true)
+                        if (_is_verbose() == true)
                         {
 
                             Console.WriteLine("Object.... ");
