@@ -17,7 +17,8 @@ namespace COFT2
         {
             _cmd_line = cmdLine;
 
-            _keywords = null;
+            _keywords = new string;
+
             _keywords.AddRange(new string[] {
               "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
             "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
@@ -37,7 +38,7 @@ namespace COFT2
         /// Run the C compiler
         /// </summary>
         /// 
-        private int Run()
+        public int Run()
         {
             // Look fo errors
             if (_cmd_line == null)
@@ -67,13 +68,13 @@ namespace COFT2
                 string source = _cmd_line.Get(index);
 
                 // Open Text
-                FileStream fi = File.OpenText(source);
+                StreamReader fi = File.OpenText(source);
             
                 // Check the file
                 if (fi == null)
                 {
                    Console.WriteLine("FATAL ERROR: Can't openm the source file");
-                return 2;
+                   return 2;
                 }
           
                 fi.Close();

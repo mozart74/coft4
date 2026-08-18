@@ -96,11 +96,11 @@ namespace COFT2
                        _is_obj = true;
 
                         // If verbose then more sturgg
-                        if (_is_verbose() == true)
+                        if (_is_verbose == true)
                         {
 
                             Console.WriteLine("Object.... ");
-                            Console.WriteLine("Object File = {0}", _object_file);
+                            Console.WriteLine("Object File s= {0}", _object_file);
                         }
 
                         _object_file = i;
