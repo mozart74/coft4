@@ -15,9 +15,7 @@ namespace COFT2
     {
         public CompileC(CommandLine cmdLine)
         {
-            _cmd_line = cmdLine;
-
-            _keywords = new string;
+            _cmd_line = null;
 
             _keywords.AddRange(new string[] {
               "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
@@ -30,8 +28,9 @@ namespace COFT2
 
             _keys = KEYWORDS._NONE;
 
-            _cmd_line = cmdLine;
-            
+            _cmd_line = new CommandLine();
+
+            _cmd_line = cmdLine;            
         }
 
         /// <summary>
