@@ -86,7 +86,6 @@ namespace COFT2
             return 0;
             
         }
-s
 
         /////////////////////////////////////////////
         // Propetyies
@@ -145,7 +144,7 @@ s
             _COMPLEX,
             _DECIMAL128,
             _DECIMAL32,
-            _DECIMAL64;
+            _DECIMAL64,
             _GENERIC,
             _IMAGINARY,
             _NORETURN,

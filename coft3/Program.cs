@@ -37,7 +37,7 @@ namespace COFT2
 
             // Run the compiler
             CompileC cc = new CompileC(cmd);
-            cc.Displose();
+            int ret = cc.Run();
 
             // Return success
             return 0;

@@ -11,7 +11,7 @@ namespace COFT2
     /// <summary>
     /// Command Line
     /// </summary>
-    public class CommandLine : IDisposable, ICloneable, IEnumerable
+    public class CommandLine : ICloneable
     {
         private const int MAX_SOURCE_FILES = 255;
         public CommandLine()
@@ -40,23 +40,16 @@ namespace COFT2
         /// <summary>
         /// Dispose of class
         /// </summary>
-        public void Dispose()
+        public virtual void Finalize()
         {
             _object_file = null;
             _source_files = null;
             _count = 0;
         }
 
-        /// <summary>
-        /// Clone the structure
-        /// </summary>
-        public object Clone()
-        {
-            return this.+MemberwieClone();
-        }
-
-        // refrents count
-        public AddRef()
+  
+        // refrence count
+        public void AddRef()
         {
             _count++;
         }
@@ -164,27 +157,9 @@ namespace COFT2
         /// <summary>
         /// *** Properies ***
         /// </summary>
-        public string ObjectFile
-        {
-            get { return _object_file; }
-        }
-
-        // Get sourcw file
-        public void Add(string file)
-        {
-            _AddRef();
-            __cmd_line.Insert(file);
-        }
-
-        // Get the object file
-        public string Get(int index)
-        {
-            return _cmd_line._source_files[i];
-        }
-
         object ICloneable.Clone()
         {
-            throw new NotImplementedException();
+            return this.MemberwiseClone();
         }
 
         public bool IsVerbose
@@ -209,26 +184,45 @@ namespace COFT2
             get { return _is_source; }
         }
 
-        public Count
+        public int  Count
         {
             get { return _count; }
         }
 
-        public string this [int index]
-            {
-                set{_source_files.Insert(index, value); }
-            get{ return _source_files[index]; }
-                
-                
+        public object this[int index]
+        {
+            get { return _object_file; }
+        }
+           
+        public void Add(string file)
+        {
+            if (_source_files == null)
+                _source_files = new ArrayList();
+        
+            _source_files.Add(file);   // store the string in the ArrayList
+            AddRef();                  // increment the internal count
+        }
 
 
-            
-        private string _object_file; // Object file to be processed
-        private ArrayList _source_files; // Source file to be processed
-        private bool _is_verbose; // Verbose output flag;
-        private bool _is_help; // Help flag;
-        private bool _is_obj; // Object file flag;
-        private bool _is_source; // Source file flag
-        private int _count; // Count of source files
+
+    public string Get(int index)
+    {
+        if (_source_files == null || index < 0 || index >= _source_files.Count)
+            return string.Empty;
+        return _source_files[index] as string ?? string.Empty;
+    }
+    
+    public string ObjectFile
+    {
+        get { return _object_file ?? string.Empty; }
+    }
+      
+    private string _object_file; // Object file to be processed
+    private ArrayList _source_files; // Source file to be processed
+    private bool _is_verbose; // Verbose output flag;
+    private bool _is_help; // Help flag;
+    private bool _is_obj; // Object file flag;
+    private bool _is_source; // Source file flag
+    private int _count; // Count of source files
     } // End class CommmandLine
 } // end namespace COFT2
