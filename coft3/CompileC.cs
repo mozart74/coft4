@@ -1,4 +1,4 @@
-﻿using COFT2;
+using COFT2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,10 +13,11 @@ namespace COFT2
     /// </summary>
    public class CompileC
     {
-        public CompileC(CommandLine cmdLine)
+        public CompileC(ref CommandLine cmdLine)
         {
-            _cmd_line = null;
-
+            _cmd_line = cmdLine;
+            
+            
             _keywords.AddRange(new string[] {
               "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
             "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
@@ -27,8 +28,6 @@ namespace COFT2
             });
 
             _keys = KEYWORDS._NONE;
-
-            _cmd_line = new CommandLine();
 
             _cmd_line = cmdLine;            
         }
@@ -45,50 +44,49 @@ namespace COFT2
                 Console.WriteLine("FATAL ERROR: Not expecting the command line to be null");
                 return 2;
             }
-      
+
             if (_cmd_line.ObjectFile == null || _cmd_line.ObjectFile == "")
             {
                 Console.WriteLine("FATAL E#RROR: No object file");
                 return 2;
             }
 
-
-            FileStream fs = File.OpenWrite(_cmd_line.ObjectFile);
-
-            if (fs == null)
+            try
             {
-                Console.WriteLine("FATAL ERROR: Can't open {0}");
+                 FileStream bw = File.Open(_cmd_line.ObjectFile, FileMode.Open, FileAccess.Write);
+
+
+                // Open souurce file
+                for (int index = 0; index <= _cmd_line.Count; index++)
+                {
+                    string source = _cmd_line.Get(index);
+
+                    // Open Text
+                    StreamReader fi = File.OpenText(source);
+
+                    // Check the file
+                    if (fi == null)
+                    {
+                        Console.WriteLine("FATAL ERROR: Can't open the source file");
+                        return 2;
+                    }
+
+                    fi.Close();
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("FATAL ERROR: {0|", e.Message);
                 return 2;
             }
 
-            // Open souurce file
-            for (int index = 0; index <= _cmd_line.Count; index++)
-            {
-                string source = _cmd_line.Get(index);
-
-                // Open Text
-                StreamReader fi = File.OpenText(source);
-            
-                // Check the file
-                if (fi == null)
-                {
-                   Console.WriteLine("FATAL ERROR: Can't openm the source file");
-                   return 2;
-                }
-          
-                fi.Close();
-            }
-
-            // Close file
-            fs.Close();
-
-            // Return
             return 0;
-            
+
         }
 
         /////////////////////////////////////////////
-        // Propetyies
+        // Propeties
         /////////////////////////////////////////////
         public KEYWORDS Keyword
         {
@@ -154,7 +152,7 @@ namespace COFT2
         };
 
         private KEYWORDS _keys;
-        private readonly List<string> _keywords;
+        private readonly ArrayList _keywords;
         private readonly CommandLine _cmd_line;
     }
 }

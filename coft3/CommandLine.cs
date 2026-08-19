@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,43 +11,29 @@ namespace COFT2
     /// <summary>
     /// Command Line
     /// </summary>
-    public class CommandLine : ICloneable
+    public class CommandLine
     {
         private const int MAX_SOURCE_FILES = 255;
+
         public CommandLine()
         {
-            _object_file = null;
-            _source_files = null;
 
             _object_file = new string("");
-            _source_files = new ArrayList();
+            _source_files = new string [MAX_SOURCE_FILES];
             _count = 0;
-
-            _object_file = "";
-            _is_verbose = new bool();
-            _is_help = new bool();
-            _is_obj = new bool();
-            _is_source = new bool();
-
-            _object_file = new string("");
-
-            _is_source = false;
             _is_verbose = false;
+            _is_source = false;
             _is_help = false;
             _is_obj = false;
         }
 
-        /// <summary>
-        /// Dispose of class
-        /// </summary>
-        public virtual void Finalize()
+
+        public int Count
         {
-            _object_file = null;
-            _source_files = null;
-            _count = 0;
+            get { return _count; }
         }
 
-  
+        
         // refrence count
         public void AddRef()
         {
@@ -55,7 +41,7 @@ namespace COFT2
         }
 
         //////////////////////////////////
-        ///  <summary>
+        //  <summary>
         /// Parse the command line arguments and set the approprite flags and values.
         /// </summary>
         /// <param name="cmd"></param>
@@ -76,7 +62,7 @@ namespace COFT2
                         _is_verbose = true;
                         Console.WriteLine("Verbose output enabled.");
                     }
-
+                    
                     else if (i == "-h" || i == "--help")
                     {
                         _is_help = true;
@@ -99,8 +85,7 @@ namespace COFT2
                         if (_is_verbose == true)
                         {
 
-                            Console.WriteLine("Object.... ");
-                            Console.WriteLine("Object File s= {0}", _object_file);
+                     Console.WriteLine("Object.... {0}", _object_file);
                         }
 
                         _object_file = i;
@@ -113,7 +98,8 @@ namespace COFT2
                         }
 
                         _is_source = true;
-                        Add(i);
+                        _count++;
+                        _source_files[_count] = i;
                     }
                     else
                     {
@@ -145,23 +131,26 @@ namespace COFT2
         }
 
         /// <summary>
-        /// GetCount: Ger counder
+        /// Interface
         /// </summary>
         /// <returns></returns>
-        public int GetCount()
+
+
+        //////////////////////////////////////
+        /// Other object
+        //////////////////////////////////////
+        public string this[int index]
         {
-            return _count;
+            set { _source_files[index] = value; }
+            get { return _source_files[index]; }
         }
 
-        ///////////////////////////////////////////////////////
+ 
+        ///////////////////////////////////
         /// <summary>
-        /// *** Properies ***
+        /// Properties
         /// </summary>
-        object ICloneable.Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
+        ////////////////////////////////
         public bool IsVerbose
         {
             get { return _is_verbose; }
@@ -183,46 +172,28 @@ namespace COFT2
         {
             get { return _is_source; }
         }
-
-        public int  Count
+        public void Add(string fileName)
         {
-            get { return _count; }
+            _source_files[_count] = fileName;  // store the string in the ArrayList
+            _count++;                // increment the internal count
         }
 
-        public object this[int index]
+        public string Get(int index)
         {
-            get { return _object_file; }
+            return _source_files[index];
         }
-           
-        public void Add(string file)
-        {
-            if (_source_files == null)
-                _source_files = new ArrayList();
         
-            _source_files.Add(file);   // store the string in the ArrayList
-            AddRef();                  // increment the internal count
+        public string ObjectFile
+        {
+            get { return _object_file ?? string.Empty; }
         }
-
-
-
-    public string Get(int index)
-    {
-        if (_source_files == null || index < 0 || index >= _source_files.Count)
-            return string.Empty;
-        return _source_files[index] as string ?? string.Empty;
-    }
-    
-    public string ObjectFile
-    {
-        get { return _object_file ?? string.Empty; }
-    }
       
-    private string _object_file; // Object file to be processed
-    private ArrayList _source_files; // Source file to be processed
-    private bool _is_verbose; // Verbose output flag;
-    private bool _is_help; // Help flag;
-    private bool _is_obj; // Object file flag;
-    private bool _is_source; // Source file flag
-    private int _count; // Count of source files
+        private string _object_file; // Object file to be processed
+        private string[] _source_files; // Source file to be processed
+        private bool _is_verbose; // Verbose output flag;
+        private bool _is_help; // Help flag;
+        private bool _is_obj; // Object file flag;
+        private bool _is_source; // Source file flag
+        private int _count;
     } // End class CommmandLine
 } // end namespace COFT2
