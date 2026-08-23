@@ -17,7 +17,6 @@ namespace COFT2
 
         public CommandLine()
         {
-
             _object_file = new string("");
             _source_files = new string [MAX_SOURCE_FILES];
             _count = 0;

@@ -15,9 +15,9 @@ namespace COFT2
     {
         public CompileC(ref CommandLine cmdLine)
         {
-            _cmd_line = cmdLine;
-            
-            
+            _cmd_line = cmdLine ?? throw new ArgumentNullException(nameof(cmdLine));
+
+
             _keywords.AddRange(new string[] {
               "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
             "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
