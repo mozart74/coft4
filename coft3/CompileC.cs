@@ -13,23 +13,29 @@ namespace COFT2
     /// </summary>
    public class CompileC
     {
-        public CompileC(ref CommandLine cmdLine)
+        public CompileC(CommandLine? cmdLine)
         {
+            Console.WriteLine("DEBUG: Entering CompileC.CompileC");
             _cmd_line = cmdLine ?? throw new ArgumentNullException(nameof(cmdLine));
 
+            try
+            {
+                Console.WriteLine("DEBUG: Allocate link list");
+                _keywords = new List<string>();
 
-            _keywords.AddRange(new string[] {
-              "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
-            "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
-            "restrict", "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef",
-            "union", "unsigned", "void", "volatile", "while", "_Alignas", "_Alignof", "_Atomic",
-            "_Bool", "_Complex", "_Decimal128", "_Decimal32",
-            "_Decimal64", "_Genric", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"
-            });
-
-            _keys = KEYWORDS._NONE;
-
-            _cmd_line = cmdLine;            
+                Console.WriteLine("Assign keywords");
+                _keywords.AddRange(new string[] {"auto", "break", "case", "char", "const", "continue", "default", "do", "double",
+                                 "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
+                                 "restrict", "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef",
+                                 "union", "unsigned", "void", "volatile", "while", "_Alignas", "_Alignof", "_Atomic",
+                                 "_Bool", "_Complex", "_Decimal128", "_Decimal32",
+                                 "_Decimal64", "_Genric", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"});    
+             }
+             catch (Exception e)    
+             {
+                  Console.WriteLine("FATAL ERROR: {0}", e.Message);
+             }
+            _keys = KEYWORDS._NONE;            
         }
 
         /// <summary>
@@ -53,13 +59,17 @@ namespace COFT2
 
             try
             {
+                Console.WriteLine("Open file for writing");
                  FileStream bw = File.Open(_cmd_line.ObjectFile, FileMode.Open, FileAccess.Write);
 
 
                 // Open souurce file
+                Console.WriteLine("DEBUG: Iterating thru Source File");
                 for (int index = 0; index <= _cmd_line.Count; index++)
                 {
                     string source = _cmd_line.Get(index);
+
+                    Console.WriteLine("DEBUG: Sorurce code = {0}", source);
 
                     // Open Text
                     StreamReader fi = File.OpenText(source);
@@ -74,6 +84,8 @@ namespace COFT2
                     fi.Close();
                 }
                 
+                bw.Close();
+
             }
             catch (Exception e)
             {
@@ -152,7 +164,7 @@ namespace COFT2
         };
 
         private KEYWORDS _keys;
-        private readonly ArrayList _keywords;
+        private readonly List<string> _keywords;
         private readonly CommandLine _cmd_line;
     }
 }

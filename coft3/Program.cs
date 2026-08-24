@@ -10,6 +10,7 @@ using System.IO;
 using COFT2;
 using System.Runtime.CompilerServices;
 
+
 namespace COFT2
 {
     public class Program
@@ -17,15 +18,22 @@ namespace COFT2
         public static int Main(params string[] args)
         {
             // Locals
+            Console.WriteLine("DEBUG: Allocate Command Line");
+
             CommandLine cmd = new CommandLine();
 
-            // Parse compiler comamand line arguments
+            // Parse compiler comamand line argument0
+            Console.WriteLine("DEBUG: Parse Compiler");
+
             cmd.ParseCommandLine(args);
 
 
             // Check for errorz
             if (cmd.IsHelp)
+            {
+                CommandLine.Usage();
                 return 0;
+            }
 
             if (!cmd.IsObj)
             {
@@ -42,11 +50,11 @@ namespace COFT2
             // Run the compiler
             try
             {
-                CompileC cc = new CompileC(ref cmd);
+                CompileC cc = new CompileC(cmd);
                 int ret = cc.Run();
                 return ret;
             }
-            catch (Exception e)
+            catch (Exception? e)
             {
 
                 Console.WriteLine("***  FATAL ERROR ***");

@@ -61,7 +61,7 @@ namespace COFT2
                         _is_verbose = true;
                         Console.WriteLine("Verbose output enabled.");
                     }
-                    
+
                     else if (i == "-h" || i == "--help")
                     {
                         _is_help = true;
@@ -78,13 +78,12 @@ namespace COFT2
                     else if (i.EndsWith(".obj") == true) // If obj then compile obj
                     {
 
-                       _is_obj = true;
+                        _is_obj = true;
 
                         // If verbose then more sturgg
                         if (_is_verbose == true)
                         {
-
-                     Console.WriteLine("Object.... {0}", _object_file);
+                            Console.WriteLine("Object.... {0}", _object_file);
                         }
 
                         _object_file = i;
@@ -97,8 +96,7 @@ namespace COFT2
                         }
 
                         _is_source = true;
-                        _count++;
-                        _source_files[_count] = i;
+                        Add(i);
                     }
                     else
                     {
@@ -117,16 +115,16 @@ namespace COFT2
         //////////////////////////////////////////////////////////////
         public static void Usage()
         {
-            Console.WriteLine("coft2 - A C/C++ compiler suite for applications");
+            Console.WriteLine("coft - A C/C++ compiler suite for applications");
             Console.WriteLine("Copyright (c) 2026 KIA. All rights reserved.");
             Console.WriteLine("Licensed under the GPLv3 License. See LICENSE file in the project");
             Console.WriteLine(" ");
-            Console.WriteLine("USAGE: coft2 [options] <object_file> <source_files");
+            Console.WriteLine("USAGE: coft [options] <object_file> <source_files");
             Console.WriteLine("options:");
             Console.WriteLine("\t-v, --verbose = Verbose output");
             Console.WriteLine("\t-h, --help = Display this help message");
             Console.WriteLine("\t<object_file>=.obj>");
-            Console.WriteLine("\t<>=.c.cpps <souce_files>...");
+            Console.WriteLine("\t<source_file>=.c.cpps <souce_files>...");
         }
 
         /// <summary>
