@@ -44,13 +44,13 @@ namespace COFT2
         /// Parse the command line arguments and set the approprite flags and values.
         /// </summary>
         /// <param name="cmd"></param>
-        public void ParseCommandLine(params string[] cmd)
+        public int ParseCommandLine(params string[] cmd)
         {
             if (cmd == null || cmd.Length == 0)
             {
                 _is_help = true;
                 Usage();
-
+                return 1;
             }
             else
             {
@@ -73,6 +73,7 @@ namespace COFT2
 
                         // Display the usage of the program
                         CommandLine.Usage();
+                        return 1;
 
                     }
                     else if (i.EndsWith(".obj") == true) // If obj then compile obj
@@ -103,9 +104,13 @@ namespace COFT2
                         Console.WriteLine("Unknown command line argument: {0}", i);
                         _is_help = true;
                         Usage();
+                        return 2;
                     } // End if
                 } // End foreach
             } // END IF
+
+            return 0;
+
         } // end ParseCommandLines
 
         //////////////////////////////////////////////////////////////
@@ -124,7 +129,7 @@ namespace COFT2
             Console.WriteLine("\t-v, --verbose = Verbose output");
             Console.WriteLine("\t-h, --help = Display this help message");
             Console.WriteLine("\t<object_file>=.obj>");
-            Console.WriteLine("\t<source_file>=.c.cpps <souce_files>...");
+            Console.WriteLine("\t<source_file>=.c.cpps <source_files>...");
         }
 
         /// <summary>

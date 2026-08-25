@@ -60,7 +60,12 @@ namespace COFT2
             try
             {
                 Console.WriteLine("Open file for writing");
-                 FileStream bw = File.Open(_cmd_line.ObjectFile, FileMode.Open, FileAccess.Write);
+
+                FileInfo fileInfo = new FileInfo(_cmd_line.ObjectFile);
+
+                FileStream fileStream = new FileStream(fileInfo, FileMode.OpenOrCreate, FileAccess.Write);
+
+              //  BinaryWriter bw = new BinaryWriter(fileInfo);
 
 
                 // Open souurce file

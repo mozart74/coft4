@@ -25,7 +25,11 @@ namespace COFT2
             // Parse compiler comamand line argument0
             Console.WriteLine("DEBUG: Parse Compiler");
 
-            cmd.ParseCommandLine(args);
+            int ret = cmd.ParseCommandLine(args);
+
+            if (ret != 0)
+                return ret;
+
 
 
             // Check for errorz
