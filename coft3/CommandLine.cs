@@ -25,6 +25,7 @@ namespace COFT2
             _is_source = false;
             _is_help = false;
             _is_obj = false;
+            _is_debug = false;
         }
 
 
@@ -76,6 +77,13 @@ namespace COFT2
                         CommandLine.Usage();
                         return 1;
 
+                    }
+                    else if (i == "-d" || i == "--debug")
+                    {
+                        _is_debug = true;
+
+                        if (_is_verbose == true)
+                            Console.WriteLine("Debug mode turned on");
                     }
                     else if (i.EndsWith(".obj") == true) // If obj then compile obj
                     {
@@ -148,6 +156,11 @@ namespace COFT2
         {
             get { return _is_verbose; }
         }
+     
+        public bool IsDebug
+        {
+            get { return _is_debug; }
+        }
 
         public bool IsHelp
         {
@@ -187,6 +200,7 @@ namespace COFT2
         private bool _is_help; // Help flag;
         private bool _is_obj; // Object file flag;
         private bool _is_source; // Source file flag
+        private bool _is_debug; // Debugger
         private int _count;
     } // End class CommmandLine
 } // end namespace COFT2

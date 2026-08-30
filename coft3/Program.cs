@@ -18,13 +18,9 @@ namespace COFT2
         public static int Main(params string[] args)
         {
             // Locals
-            Console.WriteLine("DEBUG: Allocate Command Line");
-
             CommandLine cmd = new CommandLine();
 
-            // Parse compiler comamand line argument0
-            Console.WriteLine("DEBUG: Parse Compiler");
-
+            // Parse command
             int ret = cmd.ParseCommandLine(args);
 
             if (ret != 0)

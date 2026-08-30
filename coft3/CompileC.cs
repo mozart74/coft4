@@ -15,21 +15,37 @@ namespace COFT2
     {
         public CompileC(CommandLine? cmdLine)
         {
-            Console.WriteLine("DEBUG: Entering CompileC.CompileC");
+
+            if(cmdLine != null && cmdLine.IsDebug == true)
+                Console.WriteLine("DEBUG: Entering CompileC.CompileC");
+
             _cmd_line = cmdLine ?? throw new ArgumentNullException(nameof(cmdLine));
 
             try
             {
-                Console.WriteLine("DEBUG: Allocate link list");
+                if(_cmd_line.IsDebug == true)
+                      Console.WriteLine("DEBUG: Allocate link list");
+               
                 _keywords = new List<string>();
 
-                Console.WriteLine("Assign keywords");
+                if(_cmd_line.IsDebug == true)
+                    Console.WriteLine("Assign keywords");
+
                 _keywords.AddRange(new string[] {"auto", "break", "case", "char", "const", "continue", "default", "do", "double",
                                  "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register",
                                  "restrict", "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef",
                                  "union", "unsigned", "void", "volatile", "while", "_Alignas", "_Alignof", "_Atomic",
                                  "_Bool", "_Complex", "_Decimal128", "_Decimal32",
                                  "_Decimal64", "_Genric", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"});
+
+
+                if(_cmd_line.IsVerbose == true)
+                {
+                    foreach (string keyword in _keywords)
+                    {
+                        Console.WriteLine("KEYWORD: {0}", keyword);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -53,20 +69,24 @@ namespace COFT2
 
             if (_cmd_line.ObjectFile == null || _cmd_line.ObjectFile == "")
             {
-                Console.WriteLine("FATAL E#RROR: No object file");
+                Console.WriteLine("FATAL ERROR: No object file");
                 return (2);
             }
 
             try
             {
-                Console.WriteLine("Open file for writing");
+                if(_cmd_line.IsDebug == true)
+                    Console.WriteLine("Open file for writing");
 
                 using (FileStream bw = File.OpenWrite(_cmd_line.ObjectFile))
                 {
 
                     // Open souurce file
-                    Console.WriteLine("DEBUG: Iterating thru Source File");
-                    Console.WriteLine("DEBUG: Count = {0}", _cmd_line.Count.ToString());
+                    if (_cmd_line.IsDebug == true)
+                    {
+                        Console.WriteLine("DEBUG: Iterating thru Source File");
+                        Console.WriteLine("DEBUG: Count = {0}", _cmd_line.Count.ToString());
+                    }
 
                     string source = new string("");
 
@@ -74,7 +94,8 @@ namespace COFT2
                     {
                         source = _cmd_line.Get(index);
 
-                        Console.WriteLine("DEBUG: Source code = {0}", source);
+                        if(_cmd_line.IsDebug == true)
+                            Console.WriteLine("DEBUG: Source code = {0}", source);
 
                         // Open Text
                         using (TextReader fi = File.OpenText(source))
