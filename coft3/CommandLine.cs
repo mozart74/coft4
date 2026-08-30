@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Text;
 using COFT2;
 
@@ -54,7 +55,7 @@ namespace COFT2
             }
             else
             {
-                foreach (string i in cmd)
+                foreach(string i in cmd)
                 {
                     if (i == "-v" || i == "--verbose")
                     {
@@ -136,16 +137,6 @@ namespace COFT2
         /// Interface
         /// </summary>
         /// <returns></returns>
-
-
-        //////////////////////////////////////
-        /// Other object
-        //////////////////////////////////////
-        public string this[int index]
-        {
-            set { _source_files[index] = value; }
-            get { return _source_files[index]; }
-        }
 
  
         ///////////////////////////////////

@@ -30,8 +30,6 @@ namespace COFT2
             if (ret != 0)
                 return ret;
 
-
-
             // Check for errorz
             if (cmd.IsHelp)
             {
@@ -55,22 +53,18 @@ namespace COFT2
             try
             {
                 CompileC cc = new CompileC(cmd);
-                int ret = cc.Run();
+                ret = cc.Run();
                 return ret;
-            }
-            catch (Exception? e)
-            {
 
-                Console.WriteLine("***  FATAL ERROR ***");
-                Console.WriteLine("Member name: {0}", e.TargetSite.DeclaringType);
-                Console.WriteLine("Class defining member: {0}", e.TargetSite.MemberType);
-                Console.WriteLine("Message: {0}", e.Message);
-                Console.WriteLine("Source: {0}", e.Source);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("***  FATAL ERROR ***");                
+                Console.WriteLine("Member name: {0}", e.Message);
 
                 return 2;
             } // Try/Catch
         
-             
         } // Main
     } // End Program 
 } // Namespace

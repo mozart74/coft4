@@ -11,7 +11,7 @@ namespace COFT2
     /// <summary>
     /// Compiler in  C
     /// </summary>
-   public class CompileC
+    public class CompileC
     {
         public CompileC(CommandLine? cmdLine)
         {
@@ -29,13 +29,13 @@ namespace COFT2
                                  "restrict", "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef",
                                  "union", "unsigned", "void", "volatile", "while", "_Alignas", "_Alignof", "_Atomic",
                                  "_Bool", "_Complex", "_Decimal128", "_Decimal32",
-                                 "_Decimal64", "_Genric", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"});    
-             }
-             catch (Exception e)    
-             {
-                  Console.WriteLine("FATAL ERROR: {0}", e.Message);
-             }
-            _keys = KEYWORDS._NONE;            
+                                 "_Decimal64", "_Genric", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("FATAL ERROR: {0}", e.Message);
+            }
+            _keys = KEYWORDS._NONE;
         }
 
         /// <summary>
@@ -48,64 +48,67 @@ namespace COFT2
             if (_cmd_line == null)
             {
                 Console.WriteLine("FATAL ERROR: Not expecting the command line to be null");
-                return 2;
+                return (2);
             }
 
             if (_cmd_line.ObjectFile == null || _cmd_line.ObjectFile == "")
             {
                 Console.WriteLine("FATAL E#RROR: No object file");
-                return 2;
+                return (2);
             }
 
             try
             {
                 Console.WriteLine("Open file for writing");
 
-                FileInfo fileInfo = new FileInfo(_cmd_line.ObjectFile);
-
-                FileStream fileStream = new FileStream(fileInfo, FileMode.OpenOrCreate, FileAccess.Write);
-
-              //  BinaryWriter bw = new BinaryWriter(fileInfo);
-
-
-                // Open souurce file
-                Console.WriteLine("DEBUG: Iterating thru Source File");
-                for (int index = 0; index <= _cmd_line.Count; index++)
+                using (FileStream bw = File.OpenWrite(_cmd_line.ObjectFile))
                 {
-                    string source = _cmd_line.Get(index);
 
-                    Console.WriteLine("DEBUG: Sorurce code = {0}", source);
+                    // Open souurce file
+                    Console.WriteLine("DEBUG: Iterating thru Source File");
+                    Console.WriteLine("DEBUG: Count = {0}", _cmd_line.Count.ToString());
 
-                    // Open Text
-                    StreamReader fi = File.OpenText(source);
+                    string source = new string("");
 
-                    // Check the file
-                    if (fi == null)
+                    for (int index = 0; index < _cmd_line.Count; index++)
                     {
-                        Console.WriteLine("FATAL ERROR: Can't open the source file");
-                        return 2;
-                    }
+                        source = _cmd_line.Get(index);
 
-                    fi.Close();
-                }
-                
-                bw.Close();
+                        Console.WriteLine("DEBUG: Source code = {0}", source);
 
-            }
+                        // Open Text
+                        using (TextReader fi = File.OpenText(source))
+                        {
+
+                            // Check the file
+                            if (fi == null)
+                            {
+                                Console.WriteLine("FATAL ERROR: Can't open the source file");
+                                return 2;
+                            }
+
+                            fi.Close();
+                        } // End using
+
+                        bw.Close();
+
+                    } // End using
+                } // End for
+
+            } // Try
             catch (Exception e)
             {
-                Console.WriteLine("FATAL ERROR: {0|", e.Message);
+                Console.WriteLine("FATAL ERROR: {0}", e.Message);
                 return 2;
             }
 
             return 0;
-
         }
 
         /////////////////////////////////////////////
         // Propeties
         /////////////////////////////////////////////
-        public KEYWORDS Keyword
+       public KEYWORDS Keyword
         {
             set
             {
