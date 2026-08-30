@@ -89,6 +89,8 @@ namespace COFT2
                     }
 
                     string source = new string("");
+                    string buffer = new string("");
+                    StringBuilder sourceCode = new StringBuilder();
 
                     for (int index = 0; index < _cmd_line.Count; index++)
                     {
@@ -100,6 +102,13 @@ namespace COFT2
                         // Open Text
                         using (TextReader fi = File.OpenText(source))
                         {
+                            while ((buffer = fi.ReadLine()) != null)
+                            {
+                                sourceCode.AppendLine(buffer);
+
+                                if (_cmd_line.IsDebug == true)
+                                    Console.WriteLine("DEBUG: {0}", buffer);
+                            }
 
                             // Check the file
                             if (fi == null)
