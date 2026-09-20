@@ -39,7 +39,7 @@ namespace COFT2
                                  "_Decimal64", "_Genric", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"});
 
 
-                if(_cmd_line.IsVerbose == true)
+                if(_cmd_line.IsDebug == true)
                 {
                     foreach (string keyword in _keywords)
                     {
@@ -102,6 +102,11 @@ namespace COFT2
                         // Open Text
                         using (TextReader fi = File.OpenText(source))
                         {
+                            if (fi == null)
+                            {
+                                throw new FileNotFoundException("FATAL ERROR: Cant open " + source);
+                            }
+
                             while ((buffer = fi.ReadLine()) != null)
                             {
                                 sourceCode.AppendLine(buffer);
