@@ -96,7 +96,7 @@ namespace COFT2
                     {
                         source = _cmd_line.Get(index);
 
-                        if(_cmd_line.IsDebug == true)
+                        if (_cmd_line.IsDebug == true)
                             Console.WriteLine("DEBUG: Source code = {0}", source);
 
                         // Open Text
@@ -123,12 +123,19 @@ namespace COFT2
                             }
 
                             fi.Close();
-                        } // End using
 
-                        bw.Close();
+                            CompileSource(sourceCode, bw)
+
+
+                        } // End using
+                        
+                        // Close source code
+                        bw.Close();;
 
                     } // End using
-                } // End for
+                }
+
+                bw.Close();
 
             } // Try
             catch (Exception e)
@@ -138,6 +145,18 @@ namespace COFT2
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Compiles source file
+        /// </summary>
+        /// <param name="sourceCode"></param>
+        /// <param name="bw"></param>
+        /// <returns></returns>
+        int Compile(StringBuilder sourceCode, FileStream bw)
+        {
+            // Iterate the the source file
+
         }
 
         /////////////////////////////////////////////
