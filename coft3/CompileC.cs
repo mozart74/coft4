@@ -13,6 +13,13 @@ namespace COFT2
     /// </summary>
     public class CompileC
     {
+        /// <summary>
+        /// Constants
+        /// </summary>
+        private const string delim = "\''~!@#$%^&*()_-+={}[]|\\:\";\'<>,.?/";
+
+        /// <param name="cmdLine"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public CompileC(CommandLine? cmdLine)
         {
 
@@ -115,6 +122,7 @@ namespace COFT2
                                     Console.WriteLine("DEBUG: {0}", buffer);
                             }
 
+
                             // Check the file
                             if (fi == null)
                             {
@@ -122,20 +130,22 @@ namespace COFT2
                                 return 2;
                             }
 
+
+
                             fi.Close();
 
-                            CompileSource(sourceCode, bw)
+                            if (this.Compile(ref sourceCode,  bw) != 0)
+                                return 1;
 
 
                         } // End using
-                        
-                        // Close source code
-                        bw.Close();;
+
+                        // End of the binary file
+                        bw.Close();
 
                     } // End using
-                }
 
-                bw.Close();
+                } // End for
 
             } // Try
             catch (Exception e)
@@ -152,11 +162,42 @@ namespace COFT2
         /// </summary>
         /// <param name="sourceCode"></param>
         /// <param name="bw"></param>
-        /// <returns></returns>
-        int Compile(StringBuilder sourceCode, FileStream bw)
+        /// <returns></returns
+        private int Compile(ref StringBuilder sourceCode, FileStream bw)
         {
-            // Iterate the the source file
+            // Check the parameters
+            if (sourceCode == null || sourceCode.Length == 0)
+            {
+                Console.WriteLine("FATAL ERROR: Source code is null or empty");
+                return 1;
+            }
 
+            if (bw == null)
+            {
+                Console.WriteLine("FATAL ERROR: File stream is null");
+                return 1;
+            }
+
+            // Parce the input source code
+            StringBuilder temp = new StringBuilder();
+            StringBuilder pcode = new StringBuilder();
+            string line = new string("");
+            bool is_first = true;
+
+            for (int index = 0; index < sourceCode.Length; index++)
+            {
+
+                if (sourceCode[index] == null || sourceCode[index] == "")
+                    continue;
+
+                temp = sourcode.Split(' ');
+                pcode.AppendLine(temp);
+
+            }      
+
+            return 0;;
+
+                                                
         }
 
         /////////////////////////////////////////////
