@@ -143,11 +143,9 @@ namespace COFT2
                         // End of the binary file
                         bw.Close();
 
-                    } // End using
+                    } // End for
 
-                } // End for
-
-            } // Try
+                } // End try
             catch (Exception e)
             {
                 Console.WriteLine("FATAL ERROR: {0}", e.Message);
@@ -186,13 +184,39 @@ namespace COFT2
 
             for (int index = 0; index < sourceCode.Length; index++)
             {
+                // Remove invalid char-to-string comparisons
+                string line = sourceCode[index].ToString();
 
-                if (sourceCode[index] == null || sourceCode[index] == "")
+                if (line == null || line.Length == 0)
                     continue;
 
-                temp = sourcode.Split(' ');
-                pcode.AppendLine(temp);
+                temp = line.Split(' ');
 
+                // The following line is also incorrect, but not related to CS0019:
+                // temp = sourcecode.Split(' ');
+                // You probably want to split the whole string, not a single char.
+                // For now, just append the character to pcode as a string:
+               
+                // Parse the line for deliminators
+                for (word = 0; word < temp.Length; word++)
+                {
+                    foreach (char ch in temp[word])
+                    {
+                        if (ch == ';')
+                        {
+                            pcode.AppendLine(temp[word]);
+                        }
+
+                        for(char d in delim)
+                        {
+                            if(ch == d)
+                               
+                        }
+
+                    }
+
+                   
+                }
             }      
 
             return 0;;
