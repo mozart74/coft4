@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 
 namespace COFT2
 {
@@ -16,7 +17,7 @@ namespace COFT2
         /// <summary>
         /// Constants
         /// </summary>
-        private const string delim = "\''~!@#$%^&*()_-+={}[]|\\:\";\'<>,.?/";
+        private const string delim = "\'~!@#$%^&*()_-+={}[]|\\:\";\'<>,.?/";
 
         /// <param name="cmdLine"></param>
         /// <exception cref="ArgumentNullException"></exception>
@@ -82,7 +83,7 @@ namespace COFT2
 
             try
             {
-                if(_cmd_line.IsDebug == true)
+                if (_cmd_line.IsDebug == true)
                     Console.WriteLine("Open file for writing");
 
                 using (FileStream bw = File.OpenWrite(_cmd_line.ObjectFile))
@@ -107,14 +108,15 @@ namespace COFT2
                             Console.WriteLine("DEBUG: Source code = {0}", source);
 
                         // Open Text
-                        using (TextReader fi = File.OpenText(source))
+                        using (TextReader si = File.OpenText(source))
                         {
-                            if (fi == null)
+                            if (si == null)
                             {
                                 throw new FileNotFoundException("FATAL ERROR: Cant open " + source);
                             }
 
-                            while ((buffer = fi.ReadLine()) != null)
+                            // Read the source code
+                            while ((buffer = si.ReadLine()) != null)
                             {
                                 sourceCode.AppendLine(buffer);
 
@@ -122,30 +124,23 @@ namespace COFT2
                                     Console.WriteLine("DEBUG: {0}", buffer);
                             }
 
+                            // Close the source file
+                            si.Close();
 
-                            // Check the file
-                            if (fi == null)
-                            {
-                                Console.WriteLine("FATAL ERROR: Can't open the source file");
-                                return 2;
-                            }
-
-
-
-                            fi.Close();
-
-                            if (this.Compile(ref sourceCode,  bw) != 0)
+                            // Compile the source code
+                            if (this.Compile(ref sourceCode, bw) != 0)
                                 return 1;
 
 
                         } // End using
 
-                        // End of the binary file
+                        // End of object file
                         bw.Close();
 
                     } // End for
 
-                } // End try
+                } // End for
+            } // End try
             catch (Exception e)
             {
                 Console.WriteLine("FATAL ERROR: {0}", e.Message);
@@ -177,68 +172,56 @@ namespace COFT2
             }
 
             // Parce the input source code
-            StringBuilder temp = new StringBuilder();
+            string temp = new string("");
             StringBuilder pcode = new StringBuilder();
             string line = new string("");
             bool is_first = true;
+            bool is_string = false;
+            bool is_char_string = false;
 
             for (int index = 0; index < sourceCode.Length; index++)
             {
                 // Remove invalid char-to-string comparisons
-                string line = sourceCode[index].ToString();
+                line = sourceCode[index].ToString();
+                temp = "";
 
                 if (line == null || line.Length == 0)
                     continue;
 
-                temp = line.Split(' ');
 
-                // The following line is also incorrect, but not related to CS0019:
-                // temp = sourcecode.Split(' ');
-                // You probably want to split the whole string, not a single char.
-                // For now, just append the character to pcode as a string:
-               
-                // Parse the line for deliminators
-                for (word = 0; word < temp.Length; word++)
+                temp = "";
+
+                foreach (char ch in line)
                 {
-                    foreach (char ch in temp[word])
+
+                    if (is_string == false && ch == '\"')
                     {
-                        if (ch == ';')
-                        {
-                            pcode.AppendLine(temp[word]);
-                        }
-
-                        for(char d in delim)
-                        {
-                            if(ch == d)
-                               
-                        }
-
+                        // This is a string literal, so we need to toogle the is_string flag
+                        is_string = true;
+                        continue;
                     }
+                    else if (is_string == true && ch == '\"')
+                    {
+                        is_string = false;
+                        continue;
+                    }
+                    else if (is_char_string == false && ch == '\'')
+                    {
+                        is_string = true;
+                         continue;
+                    }
+                    else
+                    {
+                        temp += ch;
+                    }
+                } // End foreach
+                
+            } // End for
 
-                   
-                }
-            }      
+            return 0;
 
-            return 0;;
+        }  // End Compile
 
-                                                
-        }
-
-        /////////////////////////////////////////////
-        // Propeties
-        /////////////////////////////////////////////
-       public KEYWORDS Keyword
-        {
-            set
-            {
-                _keys = value;
-            }
-
-            get
-            {
-                return _keys;
-            }
-        }
 
         public enum KEYWORDS
         {
