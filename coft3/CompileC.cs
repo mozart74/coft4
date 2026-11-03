@@ -177,7 +177,7 @@ namespace COFT2
             string line = new string("");
             bool is_first = true;
             bool is_string = false;
-            bool is_char_string = false;
+            bool is_char = false;
 
             for (int index = 0; index < sourceCode.Length; index++)
             {
@@ -205,16 +205,47 @@ namespace COFT2
                         is_string = false;
                         continue;
                     }
-                    else if (is_char_string == false && ch == '\'')
+                    else if (is_char == false && ch == '\'')
                     {
-                        is_string = true;
-                         continue;
+                        is_char = true;
+                        continue;
+                    }
+                    else if (is_char == false && is_string == false && delim.Contains(ch))
+                    {
+                        // Check for deliminztors
+                        if (delim.Contains(ch))
+                        {
+
+                            if (is_first)
+                            {
+                                temp = ch.ToString();
+                            }
+                            else
+                            {
+                                temp += ch.ToString();
+                            }
+
+
+                            if (ch == ';')
+                            {
+                                pcode.Append(temp);
+                                continue;
+                            }
+
+                        }
+
+                        continue;
                     }
                     else
                     {
-                        temp += ch;
-                    }
-                } // End foreach
+
+                        pcode.Append(temp);
+
+                    } // End if
+
+                    is_first = false;
+                }
+
                 
             } // End for
 
