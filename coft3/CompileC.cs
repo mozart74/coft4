@@ -249,8 +249,19 @@ namespace COFT2
                 
             } // End for
 
-            return 0;
+            // Debugging output
+            if (_cmd_line.IsDebug == true)
+            {
+                // Dump pcode to console
+                for(int i=0;i < pcode.Length; i++)
+                {
+                    Console.WriteLine("DEBUG PCODE: {0}", pcode[i]);
+                }
+            }
 
+            // Return
+            return 0;
+                     
         }  // End Compile
 
 

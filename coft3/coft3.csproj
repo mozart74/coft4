@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BytingGames.MonoGame.Framework.DesktopGL" Version="3.8.1.50-develop" />
+    <PackageReference Include="MonoSync" Version="1.0.242.1" />
+  </ItemGroup>
+
 </Project>
